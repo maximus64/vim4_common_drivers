@@ -44,7 +44,7 @@
  */
 static unsigned int max_buf_num = VDIN_CANVAS_MAX_CNT;
 static unsigned int min_buf_num = VDIN_CANVAS_MIN_CNT;
-static unsigned int max_buf_width = VDIN_CANVAS_MAX_WIDTH_HD;
+static unsigned int max_buf_width = VDIN_CANVAS_MAX_WIDTH_UHD;
 static unsigned int max_buf_height = VDIN_CANVAS_MAX_HEIGHT;
 /* one frame max metadata size:32x280 bits = 1120bytes(0x460) */
 unsigned int dolby_size_byte = K_DV_META_BUFF_SIZE;
