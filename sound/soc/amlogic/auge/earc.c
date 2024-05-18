@@ -3055,6 +3055,8 @@ static int earc_platform_probe(struct platform_device *pdev)
 	}
 
 	/* default is mute, need HDMI ARC Switch */
+	//p_earc->tx_mute = 1;
+	printk("MAXIMUS: force ARC unmute\n");
 	p_earc->tx_mute = 1;
 
 	ret = snd_soc_register_component(&pdev->dev,
@@ -3066,7 +3068,9 @@ static int earc_platform_probe(struct platform_device *pdev)
 			"snd_soc_register_component failed\n");
 		return ret;
 	}
-	p_earc->tx_earc_mode = true;
+	//p_earc->tx_earc_mode = true;
+	printk("MAXIMUS: force ARC mode\n");
+	p_earc->tx_earc_mode = false;
 	p_earc->tx_ui_flag = 1;
 	s_earc = p_earc;
 

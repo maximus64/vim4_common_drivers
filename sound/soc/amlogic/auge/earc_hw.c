@@ -37,6 +37,8 @@ void earctx_dmac_mute(struct regmap *dmac_map, bool enable)
 {
 	int val = 0;
 
+	printk("MAXIMUS %s: enable: %d\n", __func__, enable);
+
 	if (enable)
 		val = 3;
 	aml_earc_auto_gain_enable(dmac_map, !enable);
@@ -49,6 +51,9 @@ int earctx_get_dmac_mute(struct regmap *dmac_map)
 
 	mute = mmio_read(dmac_map, EARCTX_SPDIFOUT_CTRL0) & (0x3 << 21);
 	gain_enable = mmio_read(dmac_map, 0x20) & 0xFF;
+
+	printk("MAXIMUS %s: mute: %d, gain_enable: %d\n", __func__, mute, gain_enable);
+
 	return mute | gain_enable;
 }
 
@@ -801,11 +806,15 @@ void earctx_cmdc_int_mask(struct regmap *top_map)
 
 void earctx_enable_d2a(struct regmap *top_map, int enable)
 {
+	printk("MAXIMUS %s: enable: %d\n", __func__, enable);
+
 	mmio_update_bits(top_map, EARCTX_ANA_CTRL0, 0x1 << 31, enable << 31);
 }
 
 void earctx_cmdc_init(struct regmap *top_map, bool en, bool rterm_on)
 {
+	printk("MAXIMUS %s: en: %d rterm_on: %d\n", __func__, en, rterm_on);
+
 	/* always set bit[16] = 0 from T5M for Txs */
 	mmio_update_bits(top_map,
 			 EARCTX_ANA_CTRL1,
@@ -857,6 +866,8 @@ void earctx_cmdc_set_timeout(struct regmap *cmdc_map, int no_timeout)
 
 void earctx_cmdc_arc_connect(struct regmap *cmdc_map, bool init)
 {
+	printk("MAXIMUS %s: init: %d\n", __func__, init);
+
 	if (init)
 		mmio_update_bits(cmdc_map,
 				 EARC_TX_CMDC_VSM_CTRL0,
@@ -879,6 +890,7 @@ void earctx_cmdc_hpd_detect(struct regmap *top_map,
 			    struct regmap *cmdc_map,
 			    int earc_port, bool st)
 {
+	printk("MAXIMUS %s: earc_port: %d st: %d\n", __func__, earc_port, st);
 	/* select hdmirx_hpd */
 	mmio_update_bits(cmdc_map,
 			 EARC_TX_CMDC_VSM_CTRL1,
@@ -1317,6 +1329,10 @@ enum attend_type earctx_cmdc_get_attended_type(struct regmap *cmdc_map)
 	enum cmdc_st state = (enum cmdc_st)(val & 0x7);
 	enum attend_type tx_type = ATNDTYP_DISCNCT;
 
+	/* Maximus hax: force ARC for MFG test */
+	printk("MAXIMUS64 hax: force ARC for MFG test\n");
+	return ATNDTYP_ARC;
+
 	if ((val & (1 << 0x3)) && state == CMDC_ST_ARC)
 		tx_type = ATNDTYP_ARC;
 	else if ((val & (1 << 0x4)) && (state == CMDC_ST_EARC))
@@ -1350,6 +1366,9 @@ void earctx_compressed_enable(struct regmap *dmac_map,
 			      enum audio_coding_types coding_type,
 			      bool enable)
 {
+
+	printk("MAXIMUS %s: type: %d audio_coding_types: %d, enable: %d\n", __func__, type, coding_type, enable);
+
 	/*
 	 * bch generate must be disabled if type is ARC
 	 * otherwise there is no sound from ARC
@@ -1409,6 +1428,9 @@ void earctx_enable(struct regmap *top_map,
 		   bool rterm_on)
 {
 	enum attend_type type = earctx_cmdc_get_attended_type(cmdc_map);
+
+	printk("MAXIMUS %s: coding_type: %d, enable: %d, rterm_on: %d\n", __func__, coding_type, enable, rterm_on);
+
 
 	if (type == ATNDTYP_DISCNCT)
 		return;
@@ -1882,6 +1904,8 @@ u8 earcrx_cmdc_get_rx_stat_bits(struct regmap *cmdc_map)
 
 void earctx_cmdc_earc_mode(struct regmap *cmdc_map, bool enable)
 {
+	printk("MAXIMUS %s: enable: %d\n", __func__, enable);
+
 	if (enable) {
 		mmio_update_bits(cmdc_map,
 				 EARC_TX_CMDC_VSM_CTRL0,
@@ -1905,6 +1929,8 @@ void earctx_cmdc_earc_mode(struct regmap *cmdc_map, bool enable)
 
 void earctx_dmac_hold_bus_and_mute(struct regmap *dmac_map, bool enable)
 {
+	printk("MAXIMUS %s: enable: %d\n", __func__, enable);
+
 	if (enable)
 		mmio_write(dmac_map, EARCTX_ERR_CORRT_CTRL2, 0x40089202);
 	else
@@ -1913,6 +1939,8 @@ void earctx_dmac_hold_bus_and_mute(struct regmap *dmac_map, bool enable)
 
 void earctx_dmac_force_mode(struct regmap *dmac_map, bool enable)
 {
+	printk("MAXIMUS %s: enable: %d\n", __func__, enable);
+
 	/* force arc mode as earc mode will consume data faster */
 	if (enable)
 		mmio_write(dmac_map, EARCTX_DMAC_TOP_CTRL0, 0xe);
