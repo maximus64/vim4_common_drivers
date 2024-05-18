@@ -798,6 +798,18 @@
 				sound-dai = <&dummy_codec>;
 			};
 		};
+
+		aml-audio-card,dai-link@8 {
+			mclk-fs = <256>;
+			suffix-name = "alsaPORT-earc";
+			cpu {
+				sound-dai = <&earc>;
+				system-clock-frequency = <12288000>;
+			};
+			codec {
+				sound-dai = <&dummy_codec>;
+			};
+		};
 	};
 	/* Audio Related end */
 
@@ -1367,7 +1379,7 @@
 }; /* end of audiobus */
 
 &earc {
-	status = "disabled";
+	status = "okay";
 };
 
 &crg_udc_2 {
