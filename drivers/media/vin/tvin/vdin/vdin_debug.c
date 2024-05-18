@@ -15,7 +15,7 @@
  * more details.
  *
  */
-
+#define CONFIG_AMLOGIC_ENABLE_VIDEO_PIPELINE_DUMP_DATA 1
 /* Standard Linux Headers */
 #include <linux/errno.h>
 #include <linux/slab.h>
@@ -54,6 +54,7 @@
 #include "vdin_dv.h"
 #include "vdin_mem_scatter.h"
 #include "vdin_hw.h"
+MODULE_IMPORT_NS(VFS_internal_I_am_really_a_filesystem_and_am_NOT_a_driver);
 
 void vdin_parse_param(char *buf_orig, char **parm)
 {
