@@ -4610,6 +4610,7 @@ static long vdin_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		struct tvin_buf_info_s buf_info;
 
 		memset(&buf_info, 0, sizeof(buf_info));
+		buf_info.vf_size	= PAGE_ALIGN(devp->frame_size);
 		buf_info.buf_count	= devp->canvas_max_num;
 		buf_info.buf_width	= devp->canvas_w;
 		buf_info.buf_height = devp->canvas_h;
