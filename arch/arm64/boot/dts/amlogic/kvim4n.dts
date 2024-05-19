@@ -1925,6 +1925,7 @@
 	 * dw:960x540x3 = 1.5M
 	 * total size:(27.5+1.5)x buffernumber
 	 */
+	flag_cma = <0x1>;/*1:share with codec_mm*/
 	cma_size = <280>;
 	frame_buff_num = <10>;
 	vdin_function_sel = <0x101>;
