@@ -390,6 +390,10 @@ struct tvin_video_buf_s {
 	unsigned int reserved;
 };
 
+struct tvin_video_buf_maximus_s {
+	__s16 idx_list[64];
+};
+
 struct tvin_parm_s {
 	int index;		/* index of frontend for vdin */
 	enum tvin_port_e port;	/* must set port in IOCTL */
@@ -584,6 +588,7 @@ enum tvin_sg_chg_flg {
 #define TVIN_IOC_G_EVENT_INFO	_IOW(_TM_T, 0x0a, struct vdin_event_info)
 
 #define TVIN_IOC_GET_BUF            _IOR(_TM_T, 0x10, struct tvin_video_buf_s)
+#define TVIN_IOC_GET_BUF_MAXIMUS            _IOR(_TM_T, 0x60, struct tvin_video_buf_maximus_s)
 #define TVIN_IOC_PAUSE_DEC          _IO(_TM_T, 0x41)
 #define TVIN_IOC_RESUME_DEC         _IO(_TM_T, 0x42)
 #define TVIN_IOC_VF_REG             _IO(_TM_T, 0x43)

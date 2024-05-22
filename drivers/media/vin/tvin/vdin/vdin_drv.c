@@ -4646,6 +4646,31 @@ static long vdin_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 			ret = -EFAULT;
 		break;
 	}
+	/* AML TVIN_IOC_GET_BUF have race issue. Re-implement here */
+	case TVIN_IOC_GET_BUF_MAXIMUS:
+	{
+		struct tvin_video_buf_maximus_s tv_buf;
+		unsigned long flags;
+		struct vf_entry *vfe, *tmp;
+		size_t i;
+
+		for (i = 0; i < ARRAY_SIZE(tv_buf.idx_list); i++)
+			tv_buf.idx_list[i] = -1;
+
+		i = 0;
+		spin_lock_irqsave(&devp->vfp->wr_lock, flags);
+		list_for_each_entry_safe(vfe, tmp, &devp->vfp->wr_list, list) {
+			if (i >= ARRAY_SIZE(tv_buf.idx_list) - 1) /* leave one as canary */
+				break;
+			tv_buf.idx_list[i++] = vfe->vf.index;
+		}
+		spin_unlock_irqrestore(&devp->vfp->wr_lock, flags);
+
+		if (copy_to_user(argp, &tv_buf, sizeof(struct tvin_video_buf_maximus_s)))
+			ret = -EFAULT;
+
+		break;
+	}
 	case TVIN_IOC_PAUSE_DEC:
 		vdin_pause_dec(devp, 0);
 		break;
