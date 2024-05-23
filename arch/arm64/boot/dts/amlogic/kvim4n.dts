@@ -982,7 +982,7 @@
 
 	adc_keypad {
 		compatible = "amlogic, adc_keypad";
-		status = "okay";
+		status = "disable";
 		key_name = "function";
 		key_num = <1>;
 		io-channels = <&saradc 2>;
@@ -1713,7 +1713,7 @@
 };
 
 &saradc {
-	status = "okay";
+	status = "disable";
 };
 
 &ext_mdio {
