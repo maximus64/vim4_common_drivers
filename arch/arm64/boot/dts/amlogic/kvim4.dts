@@ -1005,6 +1005,12 @@
 			linux,default-trigger="default-on";
 		};
 	};
+
+	pwm_ir_tx {
+		compatible = "pwm-ir-tx";
+		status = "okay";
+		pwms = <&pwm_ef MESON_PWM_1 25000 0>;
+	};
 };
 
 &audiobus {
@@ -2043,11 +2049,13 @@
 };
 
 &pwm_ef {
+	pinctrl-0 = <&pwm_f_pins>;
+	pinctrl-names = "default";
 	status = "okay";
 };
 
 &irblaster {
-	status = "okay";
+	status = "disable";
 };
 
 &uart_C {
