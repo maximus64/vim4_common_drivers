@@ -1460,8 +1460,8 @@
 &crg_phy_20 {
 	status = "okay";
 	portnum = <1>;
-	gpio-vbus-power = "GPIOY_5";
-	gpios = <&gpio GPIOY_5 GPIO_ACTIVE_HIGH>;
+//	gpio-vbus-power = "GPIOY_5";
+//	gpios = <&gpio GPIOY_5 GPIO_ACTIVE_HIGH>;
 };
 
 &crg_phy_21 {
